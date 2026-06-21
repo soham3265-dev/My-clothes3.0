@@ -1,0 +1,6 @@
+{
+  "name": "My clothes",
+  "description": "Personalized daily outfit suggestions based on style, weather forecast restrictions, quick-dry properties, wardrobe catalog categories, a 3-day planning schedule, and complete laundry lifecycle tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
