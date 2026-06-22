@@ -54,6 +54,6 @@ jobs:
           path: './dist'
 
       - name: Deploy to GitHub Pages
-          # Deploy the uploaded artifact to GitHub Pages
+        # Deploy the uploaded artifact to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

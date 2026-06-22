@@ -135,9 +135,118 @@ export default function WardrobeCatalog({
           material: data.material || prev.material,
           isQuickDry: data.isQuickDry !== undefined ? data.isQuickDry : prev.isQuickDry,
         }));
+      } else {
+        // Fallback for static builds without server (e.g. GitHub Pages)
+        const lowercaseName = newItem.name.toLowerCase();
+        let cat: ClothingCategory = 'Top';
+        if (/pant|jean|short|trouser|skirt|cargo|jogger|legging/i.test(lowercaseName)) {
+          cat = 'Bottom';
+        } else if (/jacket|coat|hoodie|cardigan|blazer|sweater|windbreaker|raincoat/i.test(lowercaseName)) {
+          cat = 'Outerwear';
+        } else if (/shoe|boot|sneaker|sandal|slipper|sock|heel|clog/i.test(lowercaseName)) {
+          cat = 'Footwear';
+        } else if (/night|pyjama|sleep|pajama|gown|robe/i.test(lowercaseName)) {
+          cat = 'Nightwear Top';
+        }
+
+        let sty: StylePreference = 'Casual';
+        if (/sport|gym|run|active|track|jersey|mesh|workout/i.test(lowercaseName)) {
+          sty = 'Sporty';
+        } else if (/suit|formal|tuxedo|wedding|gala/i.test(lowercaseName)) {
+          sty = 'Formal';
+        } else if (/blazer|office|business|corporate|shirt/i.test(lowercaseName)) {
+          sty = 'Business';
+        } else if (/chic|designer|premium|fancy|stylish/i.test(lowercaseName)) {
+          sty = 'Chic';
+        }
+
+        let sea: 'Summer' | 'Winter' | 'Fall/Spring' | 'All-Year' = 'All-Year';
+        if (/rain|monsoon|waterproof|windbreaker|umbrella/i.test(lowercaseName)) {
+          sea = 'Fall/Spring';
+        } else if (/hot|summer|beach|swim|sun/i.test(lowercaseName)) {
+          sea = 'Summer';
+        } else if (/winter|wool|heavy|coat|warm|fleece|snow/i.test(lowercaseName)) {
+          sea = 'Winter';
+        }
+
+        let mat = 'Cotton (100%)';
+        let qd = false;
+        if (/linen/i.test(lowercaseName)) {
+          mat = 'Linen Blend';
+        } else if (/polyester|nylon|synthetic|dryfit|mesh|repellent/i.test(lowercaseName)) {
+          mat = 'Polyester (QuickDry)';
+          qd = true;
+        } else if (/denim|jeans/i.test(lowercaseName)) {
+          mat = 'Denim (Heavy)';
+        } else if (/wool|cashmere/i.test(lowercaseName)) {
+          mat = 'Wool (Warm)';
+        }
+
+        setNewItem((prev) => ({
+          ...prev,
+          category: cat,
+          style: sty,
+          seasonalUse: sea,
+          material: mat,
+          isQuickDry: qd,
+        }));
       }
     } catch (err) {
       console.error("Failed to fetch autocomplete suggestions", err);
+      // Fallback on offline/networking issues
+      const lowercaseName = newItem.name.toLowerCase();
+      let cat: ClothingCategory = 'Top';
+      if (/pant|jean|short|trouser|skirt|cargo|jogger|legging/i.test(lowercaseName)) {
+        cat = 'Bottom';
+      } else if (/jacket|coat|hoodie|cardigan|blazer|sweater|windbreaker|raincoat/i.test(lowercaseName)) {
+        cat = 'Outerwear';
+      } else if (/shoe|boot|sneaker|sandal|slipper|sock|heel|clog/i.test(lowercaseName)) {
+        cat = 'Footwear';
+      } else if (/night|pyjama|sleep|pajama|gown|robe/i.test(lowercaseName)) {
+        cat = 'Nightwear Top';
+      }
+
+      let sty: StylePreference = 'Casual';
+      if (/sport|gym|run|active|track|jersey|mesh|workout/i.test(lowercaseName)) {
+        sty = 'Sporty';
+      } else if (/suit|formal|tuxedo|wedding|gala/i.test(lowercaseName)) {
+        sty = 'Formal';
+      } else if (/blazer|office|business|corporate|shirt/i.test(lowercaseName)) {
+        sty = 'Business';
+      } else if (/chic|designer|premium|fancy|stylish/i.test(lowercaseName)) {
+        sty = 'Chic';
+      }
+
+      let sea: 'Summer' | 'Winter' | 'Fall/Spring' | 'All-Year' = 'All-Year';
+      if (/rain|monsoon|waterproof|windbreaker|umbrella/i.test(lowercaseName)) {
+        sea = 'Fall/Spring';
+      } else if (/hot|summer|beach|swim|sun/i.test(lowercaseName)) {
+        sea = 'Summer';
+      } else if (/winter|wool|heavy|coat|warm|fleece|snow/i.test(lowercaseName)) {
+        sea = 'Winter';
+      }
+
+      let mat = 'Cotton (100%)';
+      let qd = false;
+      if (/linen/i.test(lowercaseName)) {
+        mat = 'Linen Blend';
+      } else if (/polyester|nylon|synthetic|dryfit|mesh|repellent/i.test(lowercaseName)) {
+        mat = 'Polyester (QuickDry)';
+        qd = true;
+      } else if (/denim|jeans/i.test(lowercaseName)) {
+        mat = 'Denim (Heavy)';
+      } else if (/wool|cashmere/i.test(lowercaseName)) {
+        mat = 'Wool (Warm)';
+      }
+
+      setNewItem((prev) => ({
+        ...prev,
+        category: cat,
+        style: sty,
+        seasonalUse: sea,
+        material: mat,
+        isQuickDry: qd,
+      }));
     } finally {
       setAiTaggingLoading(false);
     }

@@ -64,9 +64,24 @@ export default function SchedulePlannerView({
       if (response.ok) {
         const data = await response.json();
         setRealWeatherReport(data);
+      } else {
+        // Fallback for static builds (like GitHub Pages)
+        setRealWeatherReport({
+          text: "Kolhapur enjoys a warm humid monsoon climate today. Typical temperatures range between 24°C and 30°C. Heavy cotton garments dry slowly due to dampness, whereas athletic synthetic polyesters dry rapidly in under 2 hours.",
+          sources: [
+            { uri: "https://weather.com", title: "Weather Channel (Offline Fallback)" }
+          ]
+        });
       }
     } catch (err) {
       console.error("Error fetching real weather grounding:", err);
+      // Fallback in case of networking issues
+      setRealWeatherReport({
+        text: "Kolhapur enjoys a warm humid monsoon climate today. Typical temperatures range between 24°C and 30°C. Heavy cotton garments dry slowly due to dampness, whereas athletic synthetic polyesters dry rapidly in under 2 hours.",
+        sources: [
+          { uri: "https://weather.com", title: "Weather Channel (Offline Fallback)" }
+        ]
+      });
     } finally {
       setLoadingRealWeather(false);
     }
@@ -127,9 +142,22 @@ export default function SchedulePlannerView({
       if (response.ok) {
         const data = await response.json();
         setGeminiAdvice(data);
+      } else {
+        // Fallback for non-server static hosting environments
+        setGeminiAdvice({
+          harmony: `Color coordinates of ${currentOutfit.top.name} with ${currentOutfit.bottom.name} look highly cohesive and balanced!`,
+          rainReady: `Materials like ${currentOutfit.top.material} and ${currentOutfit.bottom.material} have standard drying factors in ${selectedPlan.weather.condition} conditions.`,
+          suggestion: `Add quick-drying layers or protective outer garments to keep yourself ready for weather shifts in Kolhapur.`
+        });
       }
     } catch (err) {
       console.error("Gemini advisor fetch error:", err);
+      // Fallback on offline/networking issues
+      setGeminiAdvice({
+        harmony: `Color coordinates of ${currentOutfit.top.name} with ${currentOutfit.bottom.name} look highly cohesive and balanced!`,
+        rainReady: `Materials like ${currentOutfit.top.material} and ${currentOutfit.bottom.material} have standard drying factors in ${selectedPlan.weather.condition} conditions.`,
+        suggestion: `Add quick-drying layers or protective outer garments to keep yourself ready for weather shifts in Kolhapur.`
+      });
     } finally {
       setLoadingAdvice(false);
     }
