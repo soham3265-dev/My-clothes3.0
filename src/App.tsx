@@ -37,7 +37,34 @@ export default function App() {
 
   // Default to our customized location of Chuye based in Kolhapur, Maharashtra
   const [currentCity] = useState('Chuye, Kolhapur (Maharashtra)');
-  const [forecasts] = useState<WeatherForecast[]>(CHUYE_KOLHAPUR_FORECAST);
+  
+  // Helper to construct dynamic real-time synced forecasts based on today's live calendar date
+  const getDynamicForecasts = () => {
+    return CHUYE_KOLHAPUR_FORECAST.map((f) => {
+      const date = new Date();
+      date.setDate(date.getDate() + f.dayOffset);
+      const formatted = date.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric'
+      });
+      
+      let conditionLabel = "";
+      if (f.dayOffset === 0) conditionLabel = "Today (Monsoon)";
+      else if (f.dayOffset === 1) conditionLabel = "Tomorrow (Humid)";
+      else {
+        if (f.condition === 'Rainy') conditionLabel = `${formatted} (Rainy)`;
+        else if (f.condition === 'Cloudy') conditionLabel = `${formatted} (Overcast)`;
+        else conditionLabel = `${formatted} (${f.condition})`;
+      }
+      return {
+        ...f,
+        dayName: conditionLabel
+      };
+    });
+  };
+
+  const [forecasts, setForecasts] = useState<WeatherForecast[]>(getDynamicForecasts);
 
   const [stylePreference, setStylePreference] = useState<StylePreference>(() => {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEY_STYLE);
@@ -141,6 +168,24 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY_AUTO_CYCLE, JSON.stringify(isLaundryAutoCycle));
   }, [isLaundryAutoCycle]);
+
+  // --- 3. Dynamic Real-time Today Calendar Sync & Automatic Rollover ---
+  useEffect(() => {
+    // Keep track of the current active calendar day number (1-31)
+    let lastCheckedDay = new Date().getDate();
+
+    const interval = setInterval(() => {
+      const currentDay = new Date().getDate();
+      if (currentDay !== lastCheckedDay) {
+        console.log("Calendar day rollover detected. Syncing dates automatically...");
+        lastCheckedDay = currentDay;
+        // Update the forecast date names
+        setForecasts(getDynamicForecasts());
+      }
+    }, 15000); // Check every 15 seconds to ensure near-instantaneous daily updates if tab remains open
+
+    return () => clearInterval(interval);
+  }, []);
 
   // --- 4. Dynamic Calculation Loop (3-Day Plans) ---
   const dailyPlans = useMemo(() => {
@@ -504,8 +549,13 @@ export default function App() {
             <span className="text-[11px] font-extrabold text-stone-500 font-mono tracking-widest block">
               🌹 Premium Sarto-Weather System
             </span>
-            <span className="text-xs font-bold text-amber-600 font-mono block">
-              Sun, Jun 21, 2026
+            <span className="text-xs font-bold text-amber-600 font-mono block" title="Live calendar synced today">
+              {new Date().toLocaleDateString('en-US', {
+                weekday: 'short',
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+              })}
             </span>
           </div>
         </header>

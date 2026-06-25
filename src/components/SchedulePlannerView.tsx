@@ -87,9 +87,9 @@ export default function SchedulePlannerView({
     }
   };
 
-  // Calculates exact dates based on 2026-06-21 base
+  // Calculates exact dates dynamically based on current live date
   const getFormattedDate = (dayOffset: number) => {
-    const baseDate = new Date('2026-06-21T00:00:00');
+    const baseDate = new Date();
     baseDate.setDate(baseDate.getDate() + dayOffset);
     return baseDate.toLocaleDateString('en-US', {
       weekday: 'short',
@@ -508,6 +508,7 @@ export default function SchedulePlannerView({
                   <div className="min-w-0 flex-1 flex flex-col justify-end text-left pr-6">
                     <h5 className="text-xs font-bold text-stone-900 truncate leading-tight mb-0.5">{currentOutfit.top.name}</h5>
                     <span className="text-[9px] font-semibold text-stone-500 block font-mono capitalize truncate">{currentOutfit.top.color} • {currentOutfit.top.material}</span>
+                    <span className="text-[8px] font-mono text-emerald-600 font-bold block leading-none mt-1">🗓️ Plan Sync: {getFormattedDate(activePlanOffset)}</span>
                   </div>
 
                   <button
@@ -543,6 +544,7 @@ export default function SchedulePlannerView({
                   <div className="min-w-0 flex-1 flex flex-col justify-end text-left pr-6">
                     <h5 className="text-xs font-bold text-stone-900 truncate leading-tight mb-0.5">{currentOutfit.bottom.name}</h5>
                     <span className="text-[9px] font-semibold text-stone-500 block font-mono capitalize truncate">{currentOutfit.bottom.color} • {currentOutfit.bottom.material}</span>
+                    <span className="text-[8px] font-mono text-emerald-600 font-bold block leading-none mt-1">🗓️ Plan Sync: {getFormattedDate(activePlanOffset)}</span>
                   </div>
 
                   <button
@@ -584,6 +586,7 @@ export default function SchedulePlannerView({
                       <>
                         <h5 className="text-xs font-bold text-stone-900 truncate leading-tight mb-0.5">{currentOutfit.outerwear.name}</h5>
                         <span className="text-[9px] font-semibold text-stone-500 block font-mono capitalize truncate">{currentOutfit.outerwear.color}</span>
+                        <span className="text-[8px] font-mono text-emerald-600 font-bold block leading-none mt-1">🗓️ Plan Sync: {getFormattedDate(activePlanOffset)}</span>
                       </>
                     ) : (
                       <span className="text-[10px] text-stone-400 italic block font-sans truncate">No outerwear needed</span>
@@ -623,6 +626,7 @@ export default function SchedulePlannerView({
                   <div className="min-w-0 flex-1 flex flex-col justify-end text-left pr-6">
                     <h5 className="text-xs font-bold text-stone-900 truncate leading-tight mb-0.5">{currentOutfit.footwear.name}</h5>
                     <span className="text-[9px] font-semibold text-stone-500 block font-mono capitalize truncate">{currentOutfit.footwear.color} • {currentOutfit.footwear.material}</span>
+                    <span className="text-[8px] font-mono text-emerald-600 font-bold block leading-none mt-1">🗓️ Plan Sync: {getFormattedDate(activePlanOffset)}</span>
                   </div>
 
                   <button

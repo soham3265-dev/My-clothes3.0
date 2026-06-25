@@ -913,14 +913,20 @@ export default function WardrobeCatalog({
                       {/* 2. Text layout with extremely Small elegant name */}
                       <div className="p-4 space-y-1.5">
                         <div className="flex items-center justify-between font-sans">
-                          <h4 className="text-xs font-extrabold text-stone-900 tracking-tight shorten-title truncate max-w-[150px]">
-                            {item.name}
-                          </h4>
+                          <div>
+                            <h4 className="text-xs font-extrabold text-stone-900 tracking-tight shorten-title truncate max-w-[150px]">
+                              {item.name}
+                            </h4>
+                            <p className="text-[9px] text-stone-400 font-mono flex items-center gap-1 mt-0.5" title="Live calendar synchronized date">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse shrink-0"></span>
+                              <span>Synced: {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                            </p>
+                          </div>
                           
                           <div className="flex items-center gap-0.5 shrink-0">
                             <button
                               onClick={() => handleStartEdit(item)}
-                              className="text-stone-400 hover:text-amber-600 p-1 rounded-md hover:bg-stone-50 transition-colors cursor-pointer animate-none"
+                              className="text-stone-400 hover:text-amber-600 p-1 rounded-md hover:bg-stone-50 transition-colors cursor-pointer"
                               title="Edit Item Properties"
                             >
                               <Pencil className="w-3.5 h-3.5" />
@@ -1078,14 +1084,20 @@ export default function WardrobeCatalog({
                       {/* 2. Text layout with extremely Small elegant name */}
                       <div className="p-4 space-y-1.5">
                         <div className="flex items-center justify-between font-sans">
-                          <h4 className="text-xs font-extrabold text-stone-900 tracking-tight shorten-title truncate max-w-[150px]">
-                            {item.name}
-                          </h4>
+                          <div>
+                            <h4 className="text-xs font-extrabold text-stone-900 tracking-tight shorten-title truncate max-w-[150px]">
+                              {item.name}
+                            </h4>
+                            <p className="text-[9px] text-indigo-500 font-mono flex items-center gap-1 mt-0.5" title="Live calendar synchronized date">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse shrink-0"></span>
+                              <span>Synced: {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                            </p>
+                          </div>
                           
                           <div className="flex items-center gap-0.5 shrink-0">
                             <button
                               onClick={() => handleStartEdit(item)}
-                              className="text-indigo-400 hover:text-indigo-700 p-1 rounded-md hover:bg-[#F0EEFF] transition-colors cursor-pointer animate-none"
+                              className="text-indigo-400 hover:text-indigo-700 p-1 rounded-md hover:bg-[#F0EEFF] transition-colors cursor-pointer"
                               title="Edit Item Properties"
                             >
                               <Pencil className="w-3.5 h-3.5" />
